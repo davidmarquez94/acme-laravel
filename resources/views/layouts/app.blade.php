@@ -29,6 +29,7 @@
 
     <!-- Main CSS-->
     <link href="{{ asset('template/css/theme.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet" media="all">
     @yield('header_scripts')
 </head>
 
@@ -54,8 +55,8 @@
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
                         <li>
-                            <a href="chart.html">
-                                <i class="fas fa-chart-bar"></i>Charts</a>
+                            <a href="{{ route('drivers.index') }}">
+                                <i class="fas fa-chart-bar"></i>Conductores</a>
                         </li>
                     </ul>
                 </div>
@@ -74,8 +75,8 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li>
-                            <a href="chart.html">
-                                <i class="fas fa-chart-bar"></i>Charts</a>
+                            <a href="{{ route('drivers.index') }}">
+                                <i class="fa fa-user"></i>Conductores</a>
                         </li>
                     </ul>
                 </nav>

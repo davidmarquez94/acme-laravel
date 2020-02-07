@@ -18,3 +18,19 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/drivers', [
+        'uses' => 'DriversController@index',
+        'as' => 'drivers.index'
+    ]);
+
+    Route::get('/drivers/create', [
+        'uses' => 'DriversController@create',
+        'as' => 'drivers.create'
+    ]);
+    Route::post('/drivers/store', [
+        'uses' => 'DriversController@store',
+        'as' => 'drivers.store'
+    ]);
+});
