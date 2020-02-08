@@ -81,4 +81,35 @@ Route::group(['middleware' => ['auth']], function () {
         'uses' => 'OwnersController@destroy',
         'as' => 'owners.destroy'
     ]);
+
+    //Listar vehículos
+    Route::get('/vehicles', [
+        'uses' => 'VehiclesController@index',
+        'as' => 'vehicles.index'
+    ]);
+    //Formulario de creación de vehículos
+    Route::get('/vehicles/create', [
+        'uses' => 'VehiclesController@create',
+        'as' => 'vehicles.create'
+    ]);
+    //Guardar vehículo
+    Route::post('/vehicles/store', [
+        'uses' => 'VehiclesController@store',
+        'as' => 'vehicles.store'
+    ]);
+    //Formulario de edición de vehículo
+    Route::get('/vehicles/edit/{id}', [
+        'uses' => 'VehiclesController@edit',
+        'as' => 'vehicles.edit'
+    ]);
+    //Actualiza vehículo
+    Route::post('/vehicles/update', [
+        'uses' => 'VehiclesController@update',
+        'as' => 'vehicles.update'
+    ]);
+    //Elimina vehículo
+    Route::get('/vehicles/{id}/destroy', [
+        'uses' => 'VehiclesController@destroy',
+        'as' => 'vehicles.destroy'
+    ]);
 });

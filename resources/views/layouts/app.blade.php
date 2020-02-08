@@ -65,6 +65,11 @@
                                 <i class="fas fa-chart-bar"></i>Propietarios
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('vehicles.index') }}">
+                                <i class="fa fa-car"></i>Vehículos
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -89,6 +94,11 @@
                         <li>
                             <a href="{{ route('owners.index') }}">
                                 <i class="fa fa-user"></i>Propietarios
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('vehicles.index') }}">
+                                <i class="fa fa-car"></i>Vehículos
                             </a>
                         </li>
                     </ul>
