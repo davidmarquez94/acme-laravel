@@ -6,15 +6,15 @@
 
 @section('content')
     <div class="container">
-        <h3>Conductores</h3>
+        <h3>Propietarios</h3>
         <hr />
-        <a href="{{ route('drivers.create') }}" class="btn btn-primary">
-            Crear conductor
+        <a href="{{ route('owners.create') }}" class="btn btn-primary">
+            Crear propietario
         </a>
         <br />
         <br />
         <div class="table-responsive">
-            <table class="table table-hover" id="drivers-table">
+            <table class="table table-hover" id="owners-table">
                 <thead>
                     <th>Id</th>
                     <th>Primer Nombre</th>
@@ -22,26 +22,24 @@
                     <th>Apellidos</th>
                     <th>Dirección</th>
                     <th>Teléfono</th>
-                    <th>Tipo de licencia</th>
                     <th>Ciudad</th>
                     <th>Acciones</th>
                 </thead>
                 <tbody>
-                    @foreach($drivers as $driver)
+                    @foreach($owners as $owner)
                         <tr>
-                            <td>{{ $driver->id }}</td>
-                            <td>{{ $driver->first_name }}</td>
-                            <td>{{ $driver->middle_name }}</td>
-                            <td>{{ $driver->last_name }}</td>
-                            <td>{{ $driver->address }}</td>
-                            <td>{{ $driver->phone_number }}</td>
-                            <td>{{ $driver->license_type }}</td>
-                            <td>{{ $driver->city }}</td>
+                            <td>{{ $owner->id }}</td>
+                            <td>{{ $owner->first_name }}</td>
+                            <td>{{ $owner->middle_name }}</td>
+                            <td>{{ $owner->last_name }}</td>
+                            <td>{{ $owner->address }}</td>
+                            <td>{{ $owner->phone_number }}</td>
+                            <td>{{ $owner->city }}</td>
                             <td>
-                                <a href="{{ route('drivers.edit', $driver->id) }}" class="btn btn-primary">
+                                <a href="{{ route('owners.edit', $owner->id) }}" class="btn btn-primary">
                                     <i class="fa fa-edit"></i> Editar
                                 </a>
-                                <a href="#" class="btn btn-danger" onclick="return deleteDriver('{{ route('drivers.destroy', $driver->id) }}');">
+                                <a href="#" class="btn btn-danger" onclick="return deleteOwner('{{ route('owners.destroy', $owner->id) }}');">
                                     <i class="fa fa-trash"></i> Eliminar
                                 </a>
                             </td>
@@ -58,13 +56,13 @@
     <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function(){
-            $('#drivers-table').DataTable();
+            $('#owners-table').DataTable();
         });
 
-        function deleteDriver(path){
+        function deleteOwner(path){
             swal({
                 title: "¿Está seguro?",
-                text: "Si usted elimina al conductor, no podrá revertir la decisión después.",
+                text: "Si usted elimina al propietario, no podrá revertir la decisión después.",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,

@@ -31,6 +31,7 @@
     <link href="{{ asset('template/css/theme.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet" media="all">
     @yield('header_scripts')
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body class="animsition">
@@ -56,7 +57,13 @@
                     <ul class="navbar-mobile__list list-unstyled">
                         <li>
                             <a href="{{ route('drivers.index') }}">
-                                <i class="fas fa-chart-bar"></i>Conductores</a>
+                                <i class="fas fa-chart-bar"></i>Conductores
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('owners.index') }}">
+                                <i class="fas fa-chart-bar"></i>Propietarios
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -76,7 +83,13 @@
                     <ul class="list-unstyled navbar__list">
                         <li>
                             <a href="{{ route('drivers.index') }}">
-                                <i class="fa fa-user"></i>Conductores</a>
+                                <i class="fa fa-user"></i>Conductores
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('owners.index') }}">
+                                <i class="fa fa-user"></i>Propietarios
+                            </a>
                         </li>
                     </ul>
                 </nav>
@@ -120,6 +133,7 @@
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
+                        @include('sweet::alert')
                         @yield('content')
                     </div>
                 </div>
