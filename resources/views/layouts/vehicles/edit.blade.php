@@ -16,7 +16,12 @@
             </div>
             <div class="form-group">
                 <label>Marca</label>
-                <input type="text" name="brand" class="form-control" required="required" placeholder="Fabricante del vehículo" value="{{ $vehicle->brand }}">
+                <select name="brand_id" class="form-control">
+                    <option>Seleccione...</option>
+                    @foreach($brands as $brand)
+                        <option value="{{ $brand->id }}" @if($vehicle->brand_id == $brand->id) selected="selected">{{ $brand->name }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
                 <label>Tipo</label>

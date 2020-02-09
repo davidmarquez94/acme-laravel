@@ -31,16 +31,22 @@
                             <td>{{ $vehicle->id }}</td>
                             <td>{{ $vehicle->plate }}</td>
                             <td>{{ $vehicle->color }}</td>
-                            <td>{{ $vehicle->brand }}</td>
-                            <td>{{ $vehicle->type }}</td>
+                            <td>{{ $vehicle->brand->name }}</td>
+                            <td>
+                                @if($vehicle->type == 'private')
+                                    Particular
+                                @else
+                                    Público
+                                @endif
+                            </td>
                             <td>{{ $vehicle->owner->first_name . ' ' . $vehicle->owner->middle_name . ' ' . $vehicle->owner->last_name }}</td>
                             <td>{{ $vehicle->driver->first_name . ' ' . $vehicle->driver->middle_name . ' ' . $vehicle->driver->last_name }}</td>
                             <td>
                                 <a href="{{ route('vehicles.edit', $vehicle->id) }}" class="btn btn-primary">
-                                    <i class="fa fa-edit"></i> Editar
+                                    <i class="fa fa-edit"></i> 
                                 </a>
                                 <a href="#" class="btn btn-danger" onclick="return deleteVehicle('{{ route('vehicles.destroy', $vehicle->id) }}');">
-                                    <i class="fa fa-trash"></i> Eliminar
+                                    <i class="fa fa-trash"></i> 
                                 </a>
                             </td>
                         </tr>

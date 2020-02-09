@@ -11,7 +11,7 @@ class Vehicle extends Model
     protected $fillable = [
         'plate',
         'color',
-        'brand',
+        'brand_id',
         'type',
         'owner_id',
         'driver_id'
@@ -23,5 +23,9 @@ class Vehicle extends Model
 
     public function owner(){
         return $this->belongsTo('App\Owner', 'owner_id');
+    }
+
+    public function brand(){
+        return $this->belongsTo('App\Brand');
     }
 }

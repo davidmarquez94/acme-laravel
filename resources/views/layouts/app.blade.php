@@ -66,6 +66,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('brands.index') }}">
+                                <i class="fas fa-chart-bar"></i>Marcas
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('vehicles.index') }}">
                                 <i class="fa fa-car"></i>Vehículos
                             </a>
@@ -94,6 +99,11 @@
                         <li>
                             <a href="{{ route('owners.index') }}">
                                 <i class="fa fa-user"></i>Propietarios
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('brands.index') }}">
+                                <i class="fa fa-user"></i>Marcas
                             </a>
                         </li>
                         <li>

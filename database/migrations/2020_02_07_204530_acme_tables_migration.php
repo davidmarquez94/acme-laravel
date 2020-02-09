@@ -38,15 +38,25 @@ class AcmeTablesMigration extends Migration
             $table->timestamps();
         });
 
+        Schema::create('brands', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->timestamps();
+        });
+
         Schema::create('vehicles', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('plate');
+            $table->string('plate')->unique();
             $table->string('color');
-            $table->string('brand');
+            $table->bigInteger('brand_id')->unsigned();
             $table->enum('type', ['public', 'private']);
-            $table->bigInteger('owner_id');
-            $table->bigInteger('driver_id');
+            $table->bigInteger('owner_id')->unsigned();
+            $table->bigInteger('driver_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('brand_id')->references('id')->on('brands');
+            $table->foreign('driver_id')->references('id')->on('drivers');
+            $table->foreign('owner_id')->references('id')->on('owners');
         });
     }
 
@@ -58,6 +68,7 @@ class AcmeTablesMigration extends Migration
     public function down()
     {
         Schema::dropIfExists('vehicles');
+        Schema::dropIfExists('brands');
         Schema::dropIfExists('drivers');
         Schema::dropIfExists('owners');
     }

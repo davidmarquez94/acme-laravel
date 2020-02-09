@@ -6,42 +6,30 @@
 
 @section('content')
     <div class="container">
-        <h3>Conductores</h3>
+        <h3>Marcas</h3>
         <hr />
-        <a href="{{ route('drivers.create') }}" class="btn btn-primary">
-            Crear conductor
+        <a href="{{ route('brands.create') }}" class="btn btn-primary">
+            Crear marca
         </a>
         <br />
         <br />
         <div class="table-responsive">
-            <table class="table table-hover" id="drivers-table">
+            <table class="table table-hover" id="brands-table">
                 <thead>
                     <th>Id</th>
-                    <th>Primer Nombre</th>
-                    <th>Segundo Nombre</th>
-                    <th>Apellidos</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Tipo de licencia</th>
-                    <th>Ciudad</th>
+                    <th>Nombre</th>
                     <th>Acciones</th>
                 </thead>
                 <tbody>
-                    @foreach($drivers as $driver)
+                    @foreach($brands as $brand)
                         <tr>
-                            <td>{{ $driver->id }}</td>
-                            <td>{{ $driver->first_name }}</td>
-                            <td>{{ $driver->middle_name }}</td>
-                            <td>{{ $driver->last_name }}</td>
-                            <td>{{ $driver->address }}</td>
-                            <td>{{ $driver->phone_number }}</td>
-                            <td>{{ $driver->license_type }}</td>
-                            <td>{{ $driver->city }}</td>
+                            <td>{{ $brand->id }}</td>
+                            <td>{{ $brand->name }}</td>
                             <td>
-                                <a href="{{ route('drivers.edit', $driver->id) }}" class="btn btn-primary">
+                                <a href="{{ route('brands.edit', $brand->id) }}" class="btn btn-primary">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="#" class="btn btn-danger" onclick="return deleteDriver('{{ route('drivers.destroy', $driver->id) }}');">
+                                <a href="#" class="btn btn-danger" onclick="return deleteBrand('{{ route('brands.destroy', $brand->id) }}');">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             </td>
@@ -58,13 +46,13 @@
     <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function(){
-            $('#drivers-table').DataTable();
+            $('#brands-table').DataTable();
         });
 
-        function deleteDriver(path){
+        function deleteBrand(path){
             swal({
                 title: "¿Está seguro?",
-                text: "Si usted elimina al conductor, no podrá revertir la decisión después.",
+                text: "Si usted elimina la marca, no podrá revertir la decisión después.",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,

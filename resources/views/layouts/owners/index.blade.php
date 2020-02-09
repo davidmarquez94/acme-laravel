@@ -37,10 +37,10 @@
                             <td>{{ $owner->city }}</td>
                             <td>
                                 <a href="{{ route('owners.edit', $owner->id) }}" class="btn btn-primary">
-                                    <i class="fa fa-edit"></i> Editar
+                                    <i class="fa fa-edit"></i>
                                 </a>
                                 <a href="#" class="btn btn-danger" onclick="return deleteOwner('{{ route('owners.destroy', $owner->id) }}');">
-                                    <i class="fa fa-trash"></i> Eliminar
+                                    <i class="fa fa-trash"></i>
                                 </a>
                             </td>
                         </tr>

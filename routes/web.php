@@ -112,4 +112,35 @@ Route::group(['middleware' => ['auth']], function () {
         'uses' => 'VehiclesController@destroy',
         'as' => 'vehicles.destroy'
     ]);
+
+    //Listar marcas
+    Route::get('/brands', [
+        'uses' => 'BrandsController@index',
+        'as' => 'brands.index'
+    ]);
+    //Formulario de creación de marcas
+    Route::get('/brands/create', [
+        'uses' => 'BrandsController@create',
+        'as' => 'brands.create'
+    ]);
+    //Guardar marca
+    Route::post('/brands/store', [
+        'uses' => 'BrandsController@store',
+        'as' => 'brands.store'
+    ]);
+    //Formulario de edición de marca
+    Route::get('/brands/edit/{id}', [
+        'uses' => 'BrandsController@edit',
+        'as' => 'brands.edit'
+    ]);
+    //Actualiza marca
+    Route::post('/brands/update', [
+        'uses' => 'BrandsController@update',
+        'as' => 'brands.update'
+    ]);
+    //Elimina marca
+    Route::get('/brands/{id}/destroy', [
+        'uses' => 'BrandsController@destroy',
+        'as' => 'brands.destroy'
+    ]);
 });
