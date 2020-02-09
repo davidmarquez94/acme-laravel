@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class BrandsTableSeeder extends Seeder
 {
@@ -11,6 +12,34 @@ class BrandsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('brands')->insert([
+            [
+                'name' => 'Renault'
+            ],
+            [
+                'name' => 'Chevrolet'
+            ],
+            [
+                'name' => 'Mazda'
+            ],
+            [
+                'name' => 'Honda'
+            ],
+            [
+                'name' => 'Nissan'
+            ],
+            [
+                'name' => 'Mitsubishi'
+            ],
+            [
+                'name' => 'Ford'
+            ],
+            [
+                'name' => 'Wolkswagen'
+            ],
+            [
+                'name' => 'BMW'
+            ],
+        ]);
     }
 }

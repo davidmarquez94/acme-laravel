@@ -18,15 +18,6 @@
     <!-- Bootstrap CSS-->
     <link href="{{ asset('template/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
 
-    <!-- Vendor CSS-->
-    <link href="{{ asset('template/vendor/animsition/animsition.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('template/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('template/vendor/wow/animate.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('template/vendor/css-hamburgers/hamburgers.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('template/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('template/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('template/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
-
     <!-- Main CSS-->
     <link href="{{ asset('template/css/theme.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet" media="all">
@@ -57,17 +48,17 @@
                     <ul class="navbar-mobile__list list-unstyled">
                         <li>
                             <a href="{{ route('drivers.index') }}">
-                                <i class="fas fa-chart-bar"></i>Conductores
+                                <i class="fas fa-user"></i>Conductores
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('owners.index') }}">
-                                <i class="fas fa-chart-bar"></i>Propietarios
+                                <i class="fas fa-user"></i>Propietarios
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('brands.index') }}">
-                                <i class="fas fa-chart-bar"></i>Marcas
+                                <i class="fas fa-car"></i>Marcas
                             </a>
                         </li>
                         <li>
@@ -103,7 +94,7 @@
                         </li>
                         <li>
                             <a href="{{ route('brands.index') }}">
-                                <i class="fa fa-user"></i>Marcas
+                                <i class="fa fa-car"></i>Marcas
                             </a>
                         </li>
                         <li>
@@ -136,8 +127,15 @@
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="account-dropdown__footer">
-                                                <a href="#">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                                <a href="{{ route('logout') }}"
+                                                    onclick="event.preventDefault();
+                                                                  document.getElementById('logout-form').submit();">
+                                                    <i class="zmdi zmdi-power"></i>Logout
+                                                 </a>
+             
+                                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                     @csrf
+                                                 </form>
                                             </div>
                                         </div>
                                     </div>

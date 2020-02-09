@@ -5,16 +5,23 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Dashboard</div>
-
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    Pruebas de conocimiento PHP Grupo OET<br />
+                    <b>David Felipe Márquez González</b><br />
+                    <b>Teléfono: </b>321 794 9964<br /><br />
 
-                    You are logged in!
+                    <a class="btn btn-primary" href="{{ route('drivers.index') }}">
+                        Conductores
+                    </a>
+                    <a class="btn btn-primary" href="{{ route('owners.index') }}">
+                        Propietarios
+                    </a>
+                    <a class="btn btn-primary" href="{{ route('brands.index') }}">
+                        Marcas
+                    </a>
+                    <a class="btn btn-primary" href="{{ route('vehicles.index') }}">
+                        Vehículos
+                    </a>
                 </div>
             </div>
         </div>
