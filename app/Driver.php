@@ -19,6 +19,7 @@ class Driver extends Model
         'city'
     ];
 
+    //Relación con Vehículo
     public function vehicle(){
         return $this->hasOne('App\Vehicle', 'driver_id', 'id');
     }

@@ -9,17 +9,20 @@ use SweetAlert;
 
 class OwnersController extends Controller
 {
+    //Listado de propietarios
     public function index(){
         $owners = Owner::all();
-        return view('layouts.owners.index')->with(compact('owners'));
+        return view('layouts.owners.index')->with(compact('owners'));//Regresa listado de propietarios
     }
 
-    public function create(){
+    //Nuevo propietario
+    public function create(){//Regresa al formulario de creación de propietario
         return view('layouts.owners.create');
     }
 
+    //Guardar propietario
     public function store(request $request){
-        $messages = [
+        $messages = [//Mensajes de validación
             'first_name.required' => 'El primer nombre es obligatorio',
             'first_name.string' => 'El primer nombre debe ser una cadena de texto',
             'first_name.min' => 'El primer nombre debe tener al menos 3 caracteres',
@@ -45,7 +48,7 @@ class OwnersController extends Controller
             'city.string' => 'La ciudad debe ser una cadena de texto'
         ];
 
-        $rules = [
+        $rules = [//Reglas de validación
             'first_name' => 'required|string|min:3|max:10',
             'middle_name' => 'required|string|min:3|max:10',
             'last_name' => 'required|string|min:3|max:30',
@@ -55,9 +58,9 @@ class OwnersController extends Controller
             'city' => 'required|string'
         ];
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);//Ejecuta validador
 
-        if($validator->fails()){
+        if($validator->fails()){//Fallo del validador
             $errors = "";
             foreach($validator->errors()->messages() as $message){
                 foreach($message as $error){
@@ -65,9 +68,9 @@ class OwnersController extends Controller
                 }
             }
             alert()->error($errors)->autoclose(8000);
-            return back()->withInput();
+            return back()->withInput();//Devuelve error en alerta, coloca valores inresados en formulario
         } else {
-            $data = [
+            $data = [//Datos a insertar
                 'first_name' => $request->first_name,
                 'middle_name' => $request->middle_name,
                 'last_name' => $request->last_name,
@@ -76,20 +79,22 @@ class OwnersController extends Controller
                 'phone_number' => $request->phone_number,
                 'city' => $request->city,
             ];
-            $owner = new Owner($data);
-            $owner->save();
+            $owner = new Owner($data);//Instancia modelo
+            $owner->save();//Guarda datos
             alert()->success('Se ha registrado correctamente al propietario "' . $owner->first_name . ' ' . $owner->middle_name . ' ' . $owner->last_name . '".')->autoclose(8000);
-            return redirect()->route('owners.index');
+            return redirect()->route('owners.index');//Devuelve mensaje de éxito al listado de propietarios
         }
     }
 
-    public function edit($id){
+    //Editar propietario
+    public function edit($id){//Encuentra propietario por id y devuelve al formulario de edición
         $owner = Owner::find($id);
         return view('layouts.owners.edit')->with(compact('owner'));
     }
 
+    //Actualizar propietario
     public function update(Request $request){
-        $messages = [
+        $messages = [//Mensajes de error de validación
             'owner_id.required' => 'El id del propietario es obligatorio',
             'owner_id.numeric' => 'El id del propietario debe ser un valor numérico',
             'owner_id.exists' => 'El id del propietario debe ser un valor numérico',
@@ -117,7 +122,7 @@ class OwnersController extends Controller
             'city.string' => 'La ciudad debe ser una cadena de texto'
         ];
 
-        $rules = [
+        $rules = [//Reglas de validación
             'owner_id' => 'required|numeric|exists:owners,id',
             'first_name' => 'required|string|min:3|max:10',
             'middle_name' => 'required|string|min:3|max:10',
@@ -128,9 +133,9 @@ class OwnersController extends Controller
             'city' => 'required|string'
         ];
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);//Ejecuta validador
 
-        if($validator->fails()){
+        if($validator->fails()){//Validador falla
             $errors = "";
             foreach($validator->errors()->messages() as $message){
                 foreach($message as $error){
@@ -138,17 +143,17 @@ class OwnersController extends Controller
                 }
             }
             alert()->error($errors)->autoclose(8000);
-            return back()->withInput();
+            return back()->withInput();//Regresa mensajes de error al formulario de edición
         } else {
             $existing_document = Owner::where([
                 ['document_number', '=',$request->document_number],
                 ['id', '!=', $request->owner_id]
-            ])->get();
+            ])->get();//Busca propietario con diferente id y mismo número de documento
             if(count($existing_document) > 0){
                 alert()->error('Ya existe otro propietario con el número de documento "' . $request->document_number . '".')->autoclose(8000);
-            }
+            }//Devuelve error si encuentra al menos 1, vuelve al formulario de edición
             $owner = Owner::find($request->owner_id);
-            $data = [
+            $data = [//Encuentra propietario por id, define datos a actualizar
                 'first_name' => $request->first_name,
                 'middle_name' => $request->middle_name,
                 'last_name' => $request->last_name,
@@ -157,20 +162,20 @@ class OwnersController extends Controller
                 'phone_number' => $request->phone_number,
                 'city' => $request->city,
             ];
-            $owner->fill($data);
-            $owner->save();
+            $owner->fill($data);//Rellena modelo con datos nuevos
+            $owner->save();//Guardar propietario
             alert()->success('Se ha editado correctamente al propietario "' . $owner->first_name . ' ' . $owner->middle_name . ' ' . $owner->last_name . '".')->autoclose(8000);
-            return redirect()->route('owners.index');
+            return redirect()->route('owners.index');//Devuelve mensaje de éxito, regresa al listado de propietarios
         }
     }
 
-    public function destroy($id){
-        $owner = Owner::where('id', $id)->with(['vehicle'])->first();
-        if($owner->vehicle == null){
+    public function destroy($id){//Borrar propietario
+        $owner = Owner::where('id', $id)->with(['vehicle'])->first();//Encuentra propietario
+        if($owner->vehicle == null){//Valida si tiene algún vehículo asociado, borra si no hay asociados
             $owner->delete();
             alert()->success('Se ha eliminado el propietario "' . $owner->first_name . ' ' . $owner->middle_name . ' ' . $owner->last_name . '".')->autoclose(8000);
             return redirect()->route('owner.index');
-        } else {
+        } else {//Devuelve error si encuentra vehículos asociados
             alert()->error('Este propietario tiene un vehículo asociado, y no es posible eliminarlo.')->autoclose(8000);
             return redirect()->route('owner.index');
         }

@@ -12,6 +12,7 @@ class Brand extends Model
         'name'
     ];
 
+    //Relación con Vehículos
     public function vehicles(){
         return $this->hasMany('App\Vehicle');
     }

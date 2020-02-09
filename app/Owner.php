@@ -18,6 +18,7 @@ class Owner extends Model
         'city'
     ];
 
+    //Relación con Vehículo
     public function vehicles(){
         return $this->hasOne('App\Vehicles', 'owner_id', 'id');
     }

@@ -9,15 +9,18 @@ use SweetAlert;
 
 class DriversController extends Controller
 {
+    //Listado de conductores
     public function index(){
-        $drivers = Driver::all();
-        return view('layouts.drivers.index')->with(compact('drivers'));
+        $drivers = Driver::all();//Encuentra todos los registros
+        return view('layouts.drivers.index')->with(compact('drivers'));//Regresa al listado general de conductores
     }
 
+    //Crear conductor
     public function create(){
-        return view('layouts.drivers.create');
+        return view('layouts.drivers.create');//Regresa al formulario de creación de nuevo conductor
     }
 
+    //Guardar conductor
     public function store(request $request){
         $messages = [
             'first_name.required' => 'El primer nombre es obligatorio',
@@ -45,7 +48,7 @@ class DriversController extends Controller
             'license_type.in' => 'El tipo de licencia solo puede ser C1 o B1',
             'city.required' => 'La ciudad es obligatoria',
             'city.string' => 'La ciudad debe ser una cadena de texto'
-        ];
+        ];//Mensajes de validación
 
         $rules = [
             'first_name' => 'required|string|min:3|max:10',
@@ -56,11 +59,11 @@ class DriversController extends Controller
             'phone_number' => 'required|min:7|max:15',
             'license_type' => 'required|in:C1,B1',
             'city' => 'required|string'
-        ];
+        ];//Reglas de validación
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);//Ejecuta validador
 
-        if($validator->fails()){
+        if($validator->fails()){//Fallo del validador
             $errors = "";
             foreach($validator->errors()->messages() as $message){
                 foreach($message as $error){
@@ -68,7 +71,7 @@ class DriversController extends Controller
                 }
             }
             alert()->error($errors)->autoclose(8000);
-            return back()->withInput();
+            return back()->withInput();//Regresa al formulario con mensaje de errores de validación. Coloca de nuevo los valores en los campos del formulario
         } else {
             $data = [
                 'first_name' => $request->first_name,
@@ -79,19 +82,21 @@ class DriversController extends Controller
                 'phone_number' => $request->phone_number,
                 'license_type' => $request->license_type,
                 'city' => $request->city,
-            ];
-            $driver = new Driver($data);
-            $driver->save();
+            ];//Datos a insertar
+            $driver = new Driver($data);//Instancia modelo
+            $driver->save();//Guarda conductor
             alert()->success('Se ha registrado correctamente al conductor "' . $driver->first_name . ' ' . $driver->middle_name . ' ' . $driver->last_name . '".')->autoclose(8000);
-            return redirect()->route('drivers.index');
+            return redirect()->route('drivers.index');//Regresa al listado de conductores con mensaje de éxito
         }
     }
 
+    //Editar conductor
     public function edit($id){
-        $driver = Driver::find($id);
-        return view('layouts.drivers.edit')->with(compact('driver'));
+        $driver = Driver::find($id);//Encuentra conductor por id
+        return view('layouts.drivers.edit')->with(compact('driver'));//Regresa al formulario de edición con los datos del conductor
     }
 
+    //Actualizar conductor
     public function update(Request $request){
         $messages = [
             'driver_id.required' => 'El id del conductor es obligatorio',
@@ -121,7 +126,7 @@ class DriversController extends Controller
             'license_type.in' => 'El tipo de licencia solo puede ser C1 o B1',
             'city.required' => 'La ciudad es obligatoria',
             'city.string' => 'La ciudad debe ser una cadena de texto'
-        ];
+        ];//Mensajes de validación
 
         $rules = [
             'driver_id' => 'required|numeric|exists:drivers,id',
@@ -133,11 +138,11 @@ class DriversController extends Controller
             'phone_number' => 'required|min:7|max:15',
             'license_type' => 'required|in:C1,B1',
             'city' => 'required|string'
-        ];
+        ];//Reglas de validación
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);//Ejecuta el validador
 
-        if($validator->fails()){
+        if($validator->fails()){//Fallo del validador
             $errors = "";
             foreach($validator->errors()->messages() as $message){
                 foreach($message as $error){
@@ -145,16 +150,16 @@ class DriversController extends Controller
                 }
             }
             alert()->error($errors)->autoclose(8000);
-            return back()->withInput();
+            return back()->withInput();//Regresa al formulario con mensajes de error de validación
         } else {
             $existing_document = Driver::where([
                 ['document_number', '=',$request->document_number],
                 ['id', '!=', $request->driver_id]
-            ])->get();
+            ])->get();//Busca conductor con diferente id y mismo número de documento
             if(count($existing_document) > 0){
                 alert()->error('Ya existe otro conductor con el número de documento "' . $request->document_number . '".')->autoclose(8000);
-            }
-            $driver = Driver::find($request->driver_id);
+            }//Si encuentra al menos uno devuelve error al formulario
+            $driver = Driver::find($request->driver_id);//Busca conductor por id
             $data = [
                 'first_name' => $request->first_name,
                 'middle_name' => $request->middle_name,
@@ -164,23 +169,24 @@ class DriversController extends Controller
                 'phone_number' => $request->phone_number,
                 'license_type' => $request->license_type,
                 'city' => $request->city,
-            ];
-            $driver->fill($data);
-            $driver->save();
+            ];//Datos a actualizar
+            $driver->fill($data);//Rellena con datos nuevos
+            $driver->save();//Guarda datos
             alert()->success('Se ha editado correctamente al conductor "' . $driver->first_name . ' ' . $driver->middle_name . ' ' . $driver->last_name . '".')->autoclose(8000);
-            return redirect()->route('drivers.index');
+            return redirect()->route('drivers.index');//Devuelve al listado de conductores con mensaje de éxito
         }
     }
 
+    //Borrar conductor
     public function destroy($id){
-        $driver = Driver::where('id', $id)->with(['vehicle'])->first();
-        if($driver->vehicle == null){
+        $driver = Driver::where('id', $id)->with(['vehicle'])->first();//Encuentra conductor por id
+        if($driver->vehicle == null){//Si no tiene vehículos asociados borra
             $driver->delete();
             alert()->success('Se ha eliminado el conductor "' . $driver->first_name . ' ' . $driver->middle_name . ' ' . $driver->last_name . '".')->autoclose(8000);
-            return redirect()->route('drivers.index');
+            return redirect()->route('drivers.index');//Regresa al listado de conductores con mensaje de éxito
         } else {
             alert()->error('Este conductor tiene un vehículo asociado, y no es posible eliminarlo.')->autoclose(8000);
-            return redirect()->route('drivers.index');
+            return redirect()->route('drivers.index');//Si encuentra vehículos asociados devuelve error. No borra
         }
     }
 }

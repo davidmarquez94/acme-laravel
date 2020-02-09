@@ -17,14 +17,17 @@ class Vehicle extends Model
         'driver_id'
     ];
 
+    //Relación con conductor
     public function driver(){
         return $this->belongsTo('App\Driver', 'driver_id');
     }
 
+    //Relación con propietario
     public function owner(){
         return $this->belongsTo('App\Owner', 'owner_id');
     }
 
+    //Relación con marca
     public function brand(){
         return $this->belongsTo('App\Brand');
     }

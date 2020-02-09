@@ -9,29 +9,33 @@ use App\Brand;
 
 class BrandsController extends Controller
 {
+    //Listar marcas
     public function index(){
+        //Busca marcas
         $brands = Brand::all();
-        return view('layouts.brands.index')->with(compact('brands'));
+        return view('layouts.brands.index')->with(compact('brands'));//Devuelve a la vista con la variable
     }
 
+    //Nueva marca
     public function create(){
-        return view('layouts.brands.create');
+        return view('layouts.brands.create');//Devuelve a la vista de creación de marca
     }
 
+    //Guardar marca
     public function store(Request $request){
         $messages = [
             'name.required' => 'El nombre de la marca es obligatorio',
             'name.string' => 'El nombre de la marca debe ser una cadena de texto',
             'name.unique' => 'La marca ya está registrada en le base de datos'
-        ];
+        ];//Mensajes de error para las validaciones
 
         $rules = [
             'name' => 'required|string|unique:brands'
-        ];
+        ];//Reglas de validación
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);//Ejecuta validador
 
-        if($validator->fails()){
+        if($validator->fails()){//Fallo del validador
             $errors = "";
             foreach($validator->errors()->messages() as $message){
                 foreach($message as $error){
@@ -39,24 +43,26 @@ class BrandsController extends Controller
                 }
             }
             alert()->error($errors)->autoclose(8000);
-            return back()->withInput();
+            return back()->withInput();//Regresa al formulario con alerta de error. Coloca de nuevo los valores ingresados
         } else {
             $data = [
                 'name' => $request->name,
-            ];
-            $brand = new Brand($data);
-            $brand->save();
+            ];//Datos a insertar
+            $brand = new Brand($data);//Instancia modelo
+            $brand->save();//Guarda registro
 
             alert()->success('La marca "' . $brand->name . '" ha sido creada exitosamente');
-            return redirect()->route('brands.index');
+            return redirect()->route('brands.index');//Devuelve al listado de marcas con mensaje de éxito
         }
     }
 
+    //Editar marca
     public function edit($id){
-        $brand = Brand::find($id);
-        return view('layouts.brands.edit')->with(compact('brands'));
+        $brand = Brand::find($id);//Encuentra marca por id
+        return view('layouts.brands.edit')->with(compact('brands'));//Regresa a formulario de edición
     }
 
+    //Actualizar marca
     public function update(Request $request){
         $messages = [
             'brand_id.required' => 'El id de la marca es obligatorio',
@@ -64,16 +70,16 @@ class BrandsController extends Controller
             'brand_id.exists' => 'El id de la marca no está registrado en la base de datos',
             'name.required' => 'El nombre de la marca es obligatorio',
             'name.string' => 'El nombre de la marca debe ser una cadena de texto'
-        ];
+        ];//Mensajes de validación
 
         $rules = [
             'brand_id' => 'required|numeric|exists:brands,id',
             'name' => 'required|string'
-        ];
+        ];//Reglas de validación
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);//Ejecuta validador
 
-        if($validator->fails()){
+        if($validator->fails()){//Fallo de validador
             $errors = "";
             foreach($validator->errors()->messages() as $message){
                 foreach($message as $error){
@@ -81,36 +87,37 @@ class BrandsController extends Controller
                 }
             }
             alert()->error($errors)->autoclose(8000);
-            return back()->withInput();
+            return back()->withInput();//Regresa al formulario con mensajes de error en validación
         } else {
             $existing_brand = Brand::where([
                 ['id', '!=', $request->brand_id],
                 ['name', '=', $request->name]
-            ])->get();
+            ])->get();//Busca marca con diferente id y mismo nombre
             if(count($existing_brand) > 0){
                 alert()->error('Ya existe una marca con el nombre "' . $request->name . '".')->autoclose(8000);
-                return back()->withInput();
+                return back()->withInput();//Devuelve error si encuentra al menos 1
             } else {
-                $brand = Brand::find($request->brand_id);
+                $brand = Brand::find($request->brand_id);//Encuentra marca por id
                 $data = [
                     'name' => $request->name
-                ];
-                $brand->fill($data);
-                $brand->save();
+                ];//Define datos de inserción
+                $brand->fill($data);//Rellena modelo con datos nuevos
+                $brand->save();//Guarda marca
                 alert()->success('La marca "' . $brand->name . '" ha sido editada exitosamente')->autoclose(8000);
-                return redirect()->route('brands.index');
+                return redirect()->route('brands.index');//Regresa al listado de marcas con mensaje de éxito
             }
         }
     }
 
+    //Borrar marca
     public function destroy($id){
-        $brand = Brand::where('id', $id)->with(['vehicles'])->first();
-        if(count($brand->vehicles) > 0){
+        $brand = Brand::where('id', $id)->with(['vehicles'])->first();//Encuentra marca por id
+        if(count($brand->vehicles) > 0){//Si encuentra relaciones no permite borrar
             alert()->error('La marca "' . $brand->name . '" tiene vehículos asociados y no es posible eliminarla')->autoclose(8000);
             return redirect()->route('brands.index');
         } else {
-            $brand->delete();
-            return redirect()->route('brands.index');
+            $brand->delete();//Borra marca
+            return redirect()->route('brands.index');//Regresa al listado de marcas con mensaje de éxito
         }
     }
 }
